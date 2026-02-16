@@ -3,15 +3,15 @@ import { Logo } from "@/components/Logo";
 
 export default function Homepage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900">
+    <main className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 w-full">
       {/* Navigation Bar */}
-      <nav className="flex items-center justify-between p-6 md:p-8 max-w-7xl mx-auto">
+      <nav className="flex items-center justify-between p-6 md:p-8 px-6 md:px-12 w-full">
         <div className="flex items-center gap-3">
           <Logo size="sm" />
           <span className="text-xl font-bold text-white">SPIRITERAX</span>
         </div>
         <Link
-          to="/dashboard"
+          to="/login"
           className="px-6 py-2 rounded-full bg-white text-blue-900 font-semibold hover:bg-gray-100 transition-colors"
         >
           Sign In
@@ -19,8 +19,8 @@ export default function Homepage() {
       </nav>
 
       {/* Hero Section */}
-      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-100px)] px-6 py-12">
-        <div className="text-center max-w-3xl">
+      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-100px)] px-6 md:px-12 lg:px-20 w-full py-12">
+        <div className="text-center max-w-3xl w-full px-4 lg:px-8">
           {/* Main Heading */}
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
             SpiritEraX – Faith x Tech<br />
@@ -36,14 +36,17 @@ export default function Homepage() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Link
-              to="/dashboard"
+              to="/signup"
               className="px-8 py-4 rounded-full bg-white text-blue-900 font-bold text-lg hover:bg-gray-100 transition-colors"
             >
-              Explore Platform
+              Get Started
             </Link>
-            <button className="px-8 py-4 rounded-full bg-transparent border-2 border-white text-white font-bold text-lg hover:bg-white/10 transition-colors">
-              Join Community
-            </button>
+            <Link
+              to="/login"
+              className="px-8 py-4 rounded-full bg-transparent border-2 border-white text-white font-bold text-lg hover:bg-white/10 transition-colors"
+            >
+              Sign In
+            </Link>
           </div>
 
           {/* Feature Highlights */}

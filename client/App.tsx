@@ -8,9 +8,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
+import { Loader } from "@/components/Loader";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Homepage from "./pages/Homepage";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import CatholicHub from "./pages/CatholicHub";
 import ChannelHub from "./pages/ChannelHub";
 import Marketplace from "./pages/Marketplace";
@@ -25,6 +28,7 @@ function AppContent() {
     if (saved) return saved === "dark";
     return true; // Default to dark mode for SpiritEraX
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -36,12 +40,26 @@ function AppContent() {
     }
   }, [isDarkMode]);
 
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000); // 3 seconds loading time
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
 
-  const noSidebarRoutes = ["/"];
+  const noSidebarRoutes = ["/", "/login", "/signup"];
   const isNoSidebarRoute = noSidebarRoutes.includes(location.pathname);
+
+  // Show loader while loading
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex h-screen bg-background text-foreground">
@@ -53,6 +71,8 @@ function AppContent() {
       {/* Main Content */}
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Index />} />
         <Route path="/catholic-hub" element={<CatholicHub />} />
         <Route path="/channel-hub" element={<ChannelHub />} />
