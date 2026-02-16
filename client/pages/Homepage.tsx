@@ -11,7 +11,7 @@ export default function Homepage() {
           <span className="text-xl font-bold text-white">SPIRITERAX</span>
         </div>
         <Link
-          to="/dashboard"
+          to="/login"
           className="px-6 py-2 rounded-full bg-white text-blue-900 font-semibold hover:bg-gray-100 transition-colors"
         >
           Sign In
@@ -36,14 +36,17 @@ export default function Homepage() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Link
-              to="/dashboard"
+              to="/signup"
               className="px-8 py-4 rounded-full bg-white text-blue-900 font-bold text-lg hover:bg-gray-100 transition-colors"
             >
-              Explore Platform
+              Get Started
             </Link>
-            <button className="px-8 py-4 rounded-full bg-transparent border-2 border-white text-white font-bold text-lg hover:bg-white/10 transition-colors">
-              Join Community
-            </button>
+            <Link
+              to="/login"
+              className="px-8 py-4 rounded-full bg-transparent border-2 border-white text-white font-bold text-lg hover:bg-white/10 transition-colors"
+            >
+              Sign In
+            </Link>
           </div>
 
           {/* Feature Highlights */}

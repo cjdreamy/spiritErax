@@ -11,6 +11,8 @@ import { Sidebar } from "@/components/Sidebar";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Homepage from "./pages/Homepage";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import CatholicHub from "./pages/CatholicHub";
 import ChannelHub from "./pages/ChannelHub";
 import Marketplace from "./pages/Marketplace";
@@ -40,7 +42,7 @@ function AppContent() {
     setIsDarkMode(!isDarkMode);
   };
 
-  const noSidebarRoutes = ["/"];
+  const noSidebarRoutes = ["/", "/login", "/signup"];
   const isNoSidebarRoute = noSidebarRoutes.includes(location.pathname);
 
   return (
@@ -53,6 +55,8 @@ function AppContent() {
       {/* Main Content */}
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Index />} />
         <Route path="/catholic-hub" element={<CatholicHub />} />
         <Route path="/channel-hub" element={<ChannelHub />} />
