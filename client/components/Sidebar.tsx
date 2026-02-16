@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "./Logo";
+import { Avatar } from "./Avatar";
 import { Menu, X, Home, Radio, ShoppingBag, Moon, Settings, LogOut, Sun } from "lucide-react";
 import { AuthManager } from "@/lib/auth";
 
@@ -64,9 +65,12 @@ export function Sidebar({ isDarkMode, onToggleDarkMode }: SidebarProps) {
         {/* User info section */}
         {currentUser && (
           <div className="p-4 border-b border-sidebar-border">
-            <div className="text-center">
-              <p className="text-sm font-medium text-sidebar-foreground">{currentUser.username}</p>
-              <p className="text-xs text-sidebar-foreground/70">{currentUser.email}</p>
+            <div className="flex items-center gap-3">
+              <Avatar fullName={currentUser.fullName} size="sm" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-sidebar-foreground truncate">{currentUser.fullName}</p>
+                <p className="text-xs text-sidebar-foreground/70 truncate">{currentUser.email}</p>
+              </div>
             </div>
           </div>
         )}

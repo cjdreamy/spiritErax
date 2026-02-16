@@ -3,14 +3,40 @@
 export interface User {
   id: string;
   username: string;
+  fullName: string;
   email: string;
   password: string; // In production, this should be hashed
   createdAt: string;
 }
 
+// Cookie utilities
+export class CookieManager {
+  static setCookie(name: string, value: string, hours: number = 24): void {
+    const date = new Date();
+    date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+  }
+
+  static getCookie(name: string): string | null {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+
+  static deleteCookie(name: string): void {
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/";
+  }
+}
+
 // Simulated JSON database (in production, this would be on the server)
 const DB_KEY = 'spiritEraX_users_db';
-const SESSION_KEY = 'spiritEraX_session';
+const SESSION_COOKIE = 'spiritEraX_session';
 
 export class AuthManager {
   // Get all users from localStorage
@@ -25,7 +51,7 @@ export class AuthManager {
   }
 
   // Register new user
-  static register(username: string, email: string, password: string): { success: boolean; message: string } {
+  static register(username: string, fullName: string, email: string, password: string): { success: boolean; message: string } {
     const users = this.getUsers();
     
     // Check if user already exists
@@ -41,6 +67,7 @@ export class AuthManager {
     const newUser: User = {
       id: Date.now().toString(),
       username,
+      fullName,
       email,
       password, // In production, hash this password
       createdAt: new Date().toISOString()
@@ -61,42 +88,49 @@ export class AuthManager {
       return { success: false, message: 'Invalid email or password' };
     }
 
-    // Create session (expires in 24 hours)
+    // Create session cookie (expires in 24 hours)
     const session = {
       userId: user.id,
       expiresAt: Date.now() + (24 * 60 * 60 * 1000), // 24 hours
       username: user.username,
+      fullName: user.fullName,
       email: user.email
     };
     
-    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    CookieManager.setCookie(SESSION_COOKIE, JSON.stringify(session), 24);
     
     return { success: true, message: 'Login successful', user };
   }
 
   // Logout user
   static logout(): void {
-    localStorage.removeItem(SESSION_KEY);
+    CookieManager.deleteCookie(SESSION_COOKIE);
   }
 
   // Get current user
-  static getCurrentUser(): { userId: string; username: string; email: string } | null {
-    const session = localStorage.getItem(SESSION_KEY);
+  static getCurrentUser(): { userId: string; username: string; fullName: string; email: string } | null {
+    const session = CookieManager.getCookie(SESSION_COOKIE);
     if (!session) return null;
 
-    const sessionData = JSON.parse(session);
-    
-    // Check if session is expired
-    if (Date.now() > sessionData.expiresAt) {
+    try {
+      const sessionData = JSON.parse(session);
+      
+      // Check if session is expired
+      if (Date.now() > sessionData.expiresAt) {
+        this.logout();
+        return null;
+      }
+
+      return {
+        userId: sessionData.userId,
+        username: sessionData.username,
+        fullName: sessionData.fullName,
+        email: sessionData.email
+      };
+    } catch (error) {
       this.logout();
       return null;
     }
-
-    return {
-      userId: sessionData.userId,
-      username: sessionData.username,
-      email: sessionData.email
-    };
   }
 
   // Check if user is authenticated
@@ -111,7 +145,7 @@ export class AuthManager {
   }
 
   // Update user profile
-  static updateUser(id: string, updates: Partial<Pick<User, 'username' | 'email'>>): { success: boolean; message: string } {
+  static updateUser(id: string, updates: Partial<Pick<User, 'username' | 'fullName' | 'email'>>): { success: boolean; message: string } {
     const users = this.getUsers();
     const userIndex = users.findIndex(u => u.id === id);
     
@@ -136,18 +170,37 @@ export class AuthManager {
     users[userIndex] = { ...users[userIndex], ...updates };
     this.saveUsers(users);
 
-    // Update session if username/email changed
+    // Update session cookie if username/email/fullName changed
     const currentUser = this.getCurrentUser();
     if (currentUser && currentUser.userId === id) {
       const session = {
         userId: id,
         expiresAt: Date.now() + (24 * 60 * 60 * 1000),
         username: updates.username || currentUser.username,
+        fullName: updates.fullName || currentUser.fullName,
         email: updates.email || currentUser.email
       };
-      localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      CookieManager.setCookie(SESSION_COOKIE, JSON.stringify(session), 24);
     }
 
     return { success: true, message: 'Profile updated successfully' };
+  }
+
+  // Get user initials for avatar
+  static getUserInitials(fullName: string): string {
+    if (!fullName || fullName.trim() === '') return 'U';
+    
+    const words = fullName.trim().split(/\s+/);
+    
+    if (words.length === 1) {
+      // Single name, use first 2 letters
+      return words[0].substring(0, 2).toUpperCase();
+    }
+    
+    // Multiple names, use first letter of first two words
+    return words
+      .slice(0, 2)
+      .map(word => word.charAt(0).toUpperCase())
+      .join('');
   }
 }

@@ -73,7 +73,7 @@ export default function Signup() {
     
     // Use AuthManager for registration
     const username = extractUsername(formData.fullName);
-    const result = AuthManager.register(username, formData.email, formData.password);
+    const result = AuthManager.register(username, formData.fullName, formData.email, formData.password);
     
     setTimeout(() => {
       setIsLoading(false);
