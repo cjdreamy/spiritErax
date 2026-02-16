@@ -1,5 +1,11 @@
 import { Link } from "react-router-dom";
 import { Logo } from "@/components/Logo";
+import cross from '/icons/cross.png'
+import future from '/icons/future_feautures.png'
+import community from '/icons/community.png'
+import ai from '/icons/ai.png'
+import comming_soon from '/icons/comming_soon.png'
+import marketplace from "/icons/market_place.png";
 export default function Homepage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 w-full">
@@ -53,7 +59,9 @@ export default function Homepage() {
             {/* Catholic Hub */}
             <div className="bg-white rounded-2xl p-6 text-left shadow-lg hover:shadow-xl transition-shadow">
               <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
-                <span className="text-blue-900 font-bold">✞</span>
+                <span className="text-blue-900 font-bold">
+                  <img src={cross} alt="cross" loading="lazy" />
+                  </span>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
                 Catholic Hub Tech
@@ -72,7 +80,9 @@ export default function Homepage() {
             {/* AI Hub */}
             <div className="bg-white rounded-2xl p-6 text-left shadow-lg hover:shadow-xl transition-shadow">
               <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
-                <span className="text-blue-900 font-bold">🤖</span>
+                <span className="text-blue-900 font-bold">
+                  <img src={ai} alt="ai" loading="lazy" />
+                  </span>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
                 SpiritEraX AI
@@ -87,10 +97,12 @@ export default function Homepage() {
             {/* Coming Soon */}
             <div className="bg-white rounded-2xl p-6 text-left shadow-lg hover:shadow-xl transition-shadow">
               <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
-                <span className="text-blue-900 font-bold">✨</span>
+                <span className="text-blue-900 font-bold">
+                  <img src={marketplace} alt="marketplace" loading="lazy" />
+                  </span>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                SpiritEraX Machine Section
+                SpiritEraX Market Place Section
               </h3>
               <p className="text-sm text-gray-700">
                 Coming Soon block
@@ -100,7 +112,9 @@ export default function Homepage() {
             {/* Social */}
             <div className="bg-white rounded-2xl p-6 text-left shadow-lg hover:shadow-xl transition-shadow">
               <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
-                <span className="text-blue-900 font-bold">💬</span>
+                <span className="text-blue-900 font-bold">
+                  <img src={community} alt="community" loading="lazy" />
+                  </span>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
                 Social Communication
@@ -113,7 +127,9 @@ export default function Homepage() {
             {/* Future Vision 1 */}
             <div className="bg-white rounded-2xl p-6 text-left shadow-lg hover:shadow-xl transition-shadow">
               <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
-                <span className="text-blue-900 font-bold">🔮</span>
+                <span className="text-blue-900 font-bold">
+                  <img src={comming_soon} alt="comming soon" loading="lazy" />
+                </span>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
                 Coming Soon block
@@ -126,7 +142,9 @@ export default function Homepage() {
             {/* Future Vision 2 */}
             <div className="bg-white rounded-2xl p-6 text-left shadow-lg hover:shadow-xl transition-shadow">
               <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
-                <span className="text-blue-900 font-bold">🚀</span>
+                <span className="text-blue-900 font-bold">
+                  <img src={future} alt="future features" loading="lazy" />
+                  </span>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
                 Future features
