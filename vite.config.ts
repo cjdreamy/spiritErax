@@ -2,6 +2,7 @@ import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { createServer } from "./server";
+import { attachChatWebSocketServer } from "./server/ws-chat";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -34,6 +35,11 @@ function expressPlugin(): Plugin {
 
       // Add Express app as middleware to Vite dev server
       server.middlewares.use(app);
+
+      // Attach WebSocket server for realtime chat
+      if (server.httpServer) {
+        attachChatWebSocketServer(server.httpServer as any);
+      }
     },
   };
 }

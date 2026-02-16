@@ -10,6 +10,27 @@ type ChatMessage = {
   createdAt: number;
 };
 
+type WsConnectedMessage = {
+  type: "connected";
+  channels: string[];
+  serverTime: number;
+};
+
+type WsChatMessage = {
+  type: "message";
+  channelId: string;
+  senderName: string;
+  text: string;
+  createdAt: number;
+};
+
+type WsErrorMessage = {
+  type: "error";
+  message: string;
+};
+
+type WsIncoming = WsConnectedMessage | WsChatMessage | WsErrorMessage;
+
 const channels = [
   { id: "general", name: "General" },
   { id: "prayer", name: "Prayer" },
@@ -21,6 +42,7 @@ export default function ChannelHub() {
   const currentUser = AuthManager.getCurrentUser();
   const [activeChannelId, setActiveChannelId] = useState(channels[0]?.id ?? "general");
   const [draft, setDraft] = useState("");
+  const [wsStatus, setWsStatus] = useState<"connecting" | "open" | "closed">("connecting");
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
     const now = Date.now();
     return [
@@ -41,6 +63,9 @@ export default function ChannelHub() {
     ];
   });
 
+  const wsRef = useRef<WebSocket | null>(null);
+  const activeChannelIdRef = useRef(activeChannelId);
+
   const activeChannel = useMemo(
     () => channels.find((c) => c.id === activeChannelId) ?? channels[0],
     [activeChannelId]
@@ -59,22 +84,96 @@ export default function ChannelHub() {
     el.scrollTop = el.scrollHeight;
   }, [activeChannelId, channelMessages.length]);
 
+  useEffect(() => {
+    const proto = window.location.protocol === "https:" ? "wss" : "ws";
+    const wsUrl = `${proto}://${window.location.host}/ws/chat`;
+
+    setWsStatus("connecting");
+    const ws = new WebSocket(wsUrl);
+    wsRef.current = ws;
+
+    ws.addEventListener("open", () => {
+      setWsStatus("open");
+      ws.send(JSON.stringify({ type: "join", channelId: activeChannelIdRef.current }));
+    });
+
+    ws.addEventListener("message", (event) => {
+      let data: WsIncoming;
+      try {
+        data = JSON.parse(String(event.data)) as WsIncoming;
+      } catch {
+        return;
+      }
+
+      if (data.type === "message") {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `ws_${data.createdAt}_${Math.random().toString(16).slice(2)}`,
+            channelId: data.channelId,
+            senderName: data.senderName,
+            text: data.text,
+            createdAt: data.createdAt,
+          },
+        ]);
+      }
+    });
+
+    ws.addEventListener("close", () => {
+      setWsStatus("closed");
+    });
+
+    ws.addEventListener("error", () => {
+      setWsStatus("closed");
+    });
+
+    return () => {
+      try {
+        ws.close();
+      } catch {
+        // ignore
+      }
+      wsRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    activeChannelIdRef.current = activeChannelId;
+    const ws = wsRef.current;
+    if (!ws || ws.readyState !== WebSocket.OPEN) return;
+    ws.send(JSON.stringify({ type: "join", channelId: activeChannelId }));
+  }, [activeChannelId]);
+
   const sendMessage = () => {
     const text = draft.trim();
     if (!text) return;
 
     const senderName = currentUser?.fullName || currentUser?.username || "User";
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: `m_${Date.now()}_${Math.random().toString(16).slice(2)}`,
-        channelId: activeChannelId,
-        senderName,
-        text,
-        createdAt: Date.now(),
-      },
-    ]);
+    const ws = wsRef.current;
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(
+        JSON.stringify({
+          type: "message",
+          channelId: activeChannelId,
+          senderName,
+          text,
+          createdAt: Date.now(),
+        })
+      );
+    } else {
+      // Fallback (should be rare): local echo
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `m_${Date.now()}_${Math.random().toString(16).slice(2)}`,
+          channelId: activeChannelId,
+          senderName,
+          text,
+          createdAt: Date.now(),
+        },
+      ]);
+    }
     setDraft("");
   };
 
@@ -124,6 +223,9 @@ export default function ChannelHub() {
                 <p className="text-xs text-muted-foreground truncate">
                   {currentUser ? `Signed in as ${currentUser.fullName || currentUser.username}` : "You are browsing"}
                 </p>
+              </div>
+              <div className="text-xs text-muted-foreground whitespace-nowrap">
+                {wsStatus === "open" ? "Live" : wsStatus === "connecting" ? "Connecting…" : "Offline"}
               </div>
             </div>
 
