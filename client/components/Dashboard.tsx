@@ -62,10 +62,10 @@ const HUBS: HubCard[] = [
 
 export function Dashboard() {
   return (
-    <div className="flex-1 overflow-auto">
+    <div className="flex-1 overflow-auto w-full">
       {/* Header */}
-      <div className="bg-gradient-to-b from-primary/20 to-transparent p-6 md:p-8 border-b border-border">
-        <div className="max-w-7xl">
+      <div className="bg-gradient-to-b from-primary/20 to-transparent p-6 md:p-8 md:px-12 lg:px-20 border-b border-border w-full">
+        <div className="w-full">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
             Welcome Back
           </h1>
@@ -76,7 +76,7 @@ export function Dashboard() {
       </div>
 
       {/* Content */}
-      <div className="p-6 md:p-8 max-w-7xl">
+      <div className="p-6 md:p-8 md:px-12 lg:px-20 w-full">
         {/* Quick Actions */}
         <div className="mb-12">
           <h2 className="text-lg font-semibold text-foreground mb-4">

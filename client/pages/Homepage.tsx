@@ -3,9 +3,9 @@ import { Logo } from "@/components/Logo";
 
 export default function Homepage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900">
+    <main className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 w-full">
       {/* Navigation Bar */}
-      <nav className="flex items-center justify-between p-6 md:p-8 max-w-7xl mx-auto">
+      <nav className="flex items-center justify-between p-6 md:p-8 px-6 md:px-12 w-full">
         <div className="flex items-center gap-3">
           <Logo size="sm" />
           <span className="text-xl font-bold text-white">SPIRITERAX</span>
@@ -19,8 +19,8 @@ export default function Homepage() {
       </nav>
 
       {/* Hero Section */}
-      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-100px)] px-6 py-12">
-        <div className="text-center max-w-3xl">
+      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-100px)] px-6 md:px-12 lg:px-20 w-full py-12">
+        <div className="text-center max-w-3xl w-full px-4 lg:px-8">
           {/* Main Heading */}
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
             SpiritEraX – Faith x Tech<br />
