@@ -50,8 +50,10 @@ export function attachChatWebSocketServer(httpServer: http.Server) {
 
   const upgradeListener = (req: http.IncomingMessage, socket: any, head: Buffer) => {
     const url = req.url ?? "";
-    if (!url.startsWith("/ws/chat")) return;
+    const isChatPath = url === "/ws/chat" || url.startsWith("/ws/chat?") || url.startsWith("/ws/chat/");
+    if (!isChatPath) return;
 
+    console.log("[ws-chat] upgrade", url);
     wss.handleUpgrade(req, socket, head, (ws) => {
       wss.emit("connection", ws, req);
     });
@@ -72,6 +74,7 @@ export function attachChatWebSocketServer(httpServer: http.Server) {
   };
 
   wss.on("connection", (ws) => {
+    console.log("[ws-chat] connected");
     clients.set(ws, { channelId: "general" });
 
     send(ws, {
@@ -127,6 +130,7 @@ export function attachChatWebSocketServer(httpServer: http.Server) {
     });
 
     ws.on("close", () => {
+      console.log("[ws-chat] disconnected");
       clients.delete(ws);
     });
 
