@@ -25,3 +25,10 @@ dist-ssr
 
 .config/
 !.env
+
+node_modules
+dist
+.git
+.vscode
+.DS_Store
+*.log
