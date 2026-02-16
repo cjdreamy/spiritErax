@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Logo } from "@/components/Logo";
 import { Eye, EyeOff, Check, X } from "lucide-react";
+import { AuthManager } from "@/lib/auth";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -50,6 +51,11 @@ export default function Signup() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const extractUsername = (fullName: string) => {
+    // Extract username from full name (remove spaces and make lowercase)
+    return fullName.replace(/\s+/g, '').toLowerCase();
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -64,12 +70,31 @@ export default function Signup() {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // Simulate API call
+    
+    // Use AuthManager for registration
+    const username = extractUsername(formData.fullName);
+    const result = AuthManager.register(username, formData.email, formData.password);
+    
     setTimeout(() => {
       setIsLoading(false);
-      // Navigate to dashboard on successful signup
-      navigate("/dashboard");
-    }, 1000);
+      
+      if (result.success) {
+        // Auto-login after successful registration
+        const loginResult = AuthManager.login(formData.email, formData.password);
+        if (loginResult.success) {
+          navigate("/dashboard");
+        } else {
+          navigate("/login");
+        }
+      } else {
+        // Show error message
+        if (result.message.includes('Email')) {
+          setErrors({ email: result.message });
+        } else {
+          setErrors({ fullName: result.message });
+        }
+      }
+    }, 500);
   };
 
   return (
@@ -107,7 +132,7 @@ export default function Signup() {
                 value={formData.fullName}
                 onChange={handleChange}
                 placeholder="John Doe"
-                className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 ${
+                className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 inputcolor ${
                   errors.fullName
                     ? "border-red-500 bg-red-50"
                     : "border-gray-200 bg-gray-50 focus:bg-white"
@@ -131,7 +156,7 @@ export default function Signup() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="your@email.com"
-                className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 ${
+                className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 inputcolor ${
                   errors.email
                     ? "border-red-500 bg-red-50"
                     : "border-gray-200 bg-gray-50 focus:bg-white"
@@ -156,7 +181,7 @@ export default function Signup() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 ${
+                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 inputcolor ${
                     errors.password
                       ? "border-red-500 bg-red-50"
                       : "border-gray-200 bg-gray-50 focus:bg-white"
@@ -218,7 +243,7 @@ export default function Signup() {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 ${
+                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 inputcolor ${
                     errors.confirmPassword
                       ? "border-red-500 bg-red-50"
                       : "border-gray-200 bg-gray-50 focus:bg-white"

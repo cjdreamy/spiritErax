@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "./Logo";
 import { Menu, X, Home, Radio, ShoppingBag, Moon, Settings, LogOut, Sun } from "lucide-react";
+import { AuthManager } from "@/lib/auth";
 
 interface SidebarProps {
   isDarkMode: boolean;
@@ -11,6 +12,8 @@ interface SidebarProps {
 export function Sidebar({ isDarkMode, onToggleDarkMode }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const currentUser = AuthManager.getCurrentUser();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -21,6 +24,12 @@ export function Sidebar({ isDarkMode, onToggleDarkMode }: SidebarProps) {
   ];
 
   const closeSidebar = () => setIsOpen(false);
+
+  const handleLogout = () => {
+    AuthManager.logout();
+    navigate('/login');
+    closeSidebar();
+  };
 
   return (
     <>
@@ -51,6 +60,16 @@ export function Sidebar({ isDarkMode, onToggleDarkMode }: SidebarProps) {
           <Logo size="sm" />
           <h1 className="text-xl font-bold whitespace-nowrap">SPIRITERAX</h1>
         </div>
+
+        {/* User info section */}
+        {currentUser && (
+          <div className="p-4 border-b border-sidebar-border">
+            <div className="text-center">
+              <p className="text-sm font-medium text-sidebar-foreground">{currentUser.username}</p>
+              <p className="text-xs text-sidebar-foreground/70">{currentUser.email}</p>
+            </div>
+          </div>
+        )}
 
         {/* Navigation */}
         <nav className="flex-1 p-6 space-y-2">
@@ -94,7 +113,10 @@ export function Sidebar({ isDarkMode, onToggleDarkMode }: SidebarProps) {
             <span>Settings</span>
           </Link>
 
-          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors text-left">
+          <button 
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors text-left"
+          >
             <LogOut size={20} />
             <span>Logout</span>
           </button>

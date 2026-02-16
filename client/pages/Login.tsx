@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Logo } from "@/components/Logo";
 import { Eye, EyeOff } from "lucide-react";
+import { AuthManager } from "@/lib/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -36,12 +37,20 @@ export default function Login() {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // Simulate API call
+    
+    // Use AuthManager for authentication
+    const result = AuthManager.login(email, password);
+    
     setTimeout(() => {
       setIsLoading(false);
-      // Navigate to dashboard on successful login
-      navigate("/dashboard");
-    }, 1000);
+      
+      if (result.success) {
+        navigate("/dashboard");
+      } else {
+        // Show error message
+        setErrors({ email: result.message });
+      }
+    }, 500); // Shorter delay for better UX
   };
 
   return (
@@ -70,10 +79,10 @@ export default function Login() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email Field */}
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
+              <label className="block text-sm font-semibold text-gray-900 mb-2 ">
                 Email Address
               </label>
-              <input
+              <input 
                 type="email"
                 value={email}
                 onChange={(e) => {
@@ -81,7 +90,7 @@ export default function Login() {
                   if (errors.email) setErrors({ ...errors, email: undefined });
                 }}
                 placeholder="your@email.com"
-                className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 ${
+                className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 inputcolor ${
                   errors.email
                     ? "border-red-500 bg-red-50"
                     : "border-gray-200 bg-gray-50 focus:bg-white"
@@ -108,7 +117,7 @@ export default function Login() {
                     if (errors.password) setErrors({ ...errors, password: undefined });
                   }}
                   placeholder="••••••••"
-                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 ${
+                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 inputcolor ${
                     errors.password
                       ? "border-red-500 bg-red-50"
                       : "border-gray-200 bg-gray-50 focus:bg-white"
@@ -169,10 +178,10 @@ export default function Login() {
           </Link>
         </div>
 
-        {/* Demo Note */}
-        <p className="text-center text-blue-200 text-sm mt-6">
+        {/*  */}
+        {/* <p className="text-center text-blue-200 text-sm mt-6">
           This is a demo. Use any credentials to continue.
-        </p>
+        </p> */}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { BookOpen, Zap, Users, Lock, Sparkles, Search, User } from "lucide-react";
 import SExlogo from '/logo_spritErax.jpeg';
+import { AuthManager } from "@/lib/auth";
 
 interface HubCard {
   id: string;
@@ -62,6 +63,8 @@ const HUBS: HubCard[] = [
 ];
 
 export function Dashboard() {
+  const currentUser = AuthManager.getCurrentUser();
+  
   return (
     <div className="flex-1 overflow-auto w-full relative">
       {/* Background Image */}
@@ -97,9 +100,14 @@ export function Dashboard() {
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             SpiritEraX - Faith x Tech for All
           </h1>
-          <p className="text-xl text-gray-600 mb-8">
+          <p className="text-xl text-gray-600 mb-2">
             Welcome to SpiritEraX, where faith meets technology
           </p>
+          {currentUser && (
+            <p className="text-lg text-blue-600 font-medium mb-8">
+              Welcome back, {currentUser.username}!
+            </p>
+          )}
           
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
