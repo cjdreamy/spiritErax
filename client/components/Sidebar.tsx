@@ -66,9 +66,15 @@ export function Sidebar({ isDarkMode, onToggleDarkMode }: SidebarProps) {
         {currentUser && (
           <div className="p-4 border-b border-sidebar-border">
             <div className="flex items-center gap-3">
-              <Avatar fullName={currentUser.fullName} size="sm" />
+              <Avatar 
+                fullName={currentUser.fullName} 
+                size="sm" 
+                showIcon={!currentUser.fullName} 
+              />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-sidebar-foreground truncate">{currentUser.fullName}</p>
+                <p className="text-sm font-medium text-sidebar-foreground truncate">
+                  {currentUser.fullName || 'User'}
+                </p>
                 <p className="text-xs text-sidebar-foreground/70 truncate">{currentUser.email}</p>
               </div>
             </div>

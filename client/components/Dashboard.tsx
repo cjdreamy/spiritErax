@@ -105,7 +105,7 @@ export function Dashboard() {
           </p>
           {currentUser && (
             <p className="text-lg text-blue-600 font-medium mb-8">
-              Welcome back, {currentUser.fullName}!
+              Welcome back, {currentUser.fullName || 'User'}!
             </p>
           )}
           

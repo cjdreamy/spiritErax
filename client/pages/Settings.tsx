@@ -5,7 +5,7 @@ import { AuthManager } from "@/lib/auth";
 
 export default function Settings() {
   const navigate = useNavigate();
-  const currentUser = AuthManager.getCurrentUser();
+  const [currentUser, setCurrentUser] = useState(() => AuthManager.getCurrentUser());
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -17,13 +17,16 @@ export default function Settings() {
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    if (!currentUser) {
+    const fresh = AuthManager.getCurrentUser();
+    setCurrentUser(fresh);
+
+    if (!fresh) {
       navigate("/login");
       return;
     }
 
     // Load current user data
-    const user = AuthManager.getUserById(currentUser.userId);
+    const user = AuthManager.getUserById(fresh.userId);
     if (user) {
       setFormData({
         fullName: user.fullName,
@@ -31,7 +34,7 @@ export default function Settings() {
         email: user.email,
       });
     }
-  }, [currentUser, navigate]);
+  }, [navigate]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -73,6 +76,8 @@ export default function Settings() {
       setIsLoading(false);
       
       if (result.success) {
+        // Refresh cookie-backed user data so UI updates immediately
+        setCurrentUser(AuthManager.getCurrentUser());
         setSuccessMessage(result.message);
         setIsEditing(false);
       } else {

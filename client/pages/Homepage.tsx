@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Logo } from "@/components/Logo";
-
 export default function Homepage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 w-full">
@@ -142,7 +141,7 @@ export default function Homepage() {
 
       {/* Footer */}
       <footer className="text-center py-8 text-blue-200 border-t border-blue-700/50">
-        <p>&copy; 2024 SpiritEraX. All rights reserved.</p>
+        <p>&copy;@cjdreamy 2026 SpiritEraX. All rights reserved.</p>
       </footer>
     </main>
   );

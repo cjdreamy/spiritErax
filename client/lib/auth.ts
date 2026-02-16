@@ -15,7 +15,8 @@ export class CookieManager {
     const date = new Date();
     date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
     const expires = "expires=" + date.toUTCString();
-    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    const encodedValue = encodeURIComponent(value);
+    document.cookie = `${name}=${encodedValue};${expires};path=/;SameSite=Lax`;
   }
 
   static getCookie(name: string): string | null {
@@ -24,13 +25,20 @@ export class CookieManager {
     for (let i = 0; i < ca.length; i++) {
       let c = ca[i];
       while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+      if (c.indexOf(nameEQ) === 0) {
+        const rawValue = c.substring(nameEQ.length, c.length);
+        try {
+          return decodeURIComponent(rawValue);
+        } catch {
+          return rawValue;
+        }
+      }
     }
     return null;
   }
 
   static deleteCookie(name: string): void {
-    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/";
+    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;SameSite=Lax`;
   }
 }
 

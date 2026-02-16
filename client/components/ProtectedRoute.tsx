@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { AuthManager } from '@/lib/auth';
 
 interface ProtectedRouteProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
