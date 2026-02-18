@@ -17,26 +17,23 @@ export default function Settings() {
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    const run = async () => {
-      const fresh = AuthManager.getCurrentUser();
-      setCurrentUser(fresh);
+    const fresh = AuthManager.getCurrentUser();
+    setCurrentUser(fresh);
 
-      if (!fresh) {
-        navigate("/login");
-        return;
-      }
+    if (!fresh) {
+      navigate("/login");
+      return;
+    }
 
-      const user = await AuthManager.getUserById(fresh.userId);
-      if (user) {
-        setFormData({
-          fullName: user.fullName,
-          username: user.username,
-          email: user.email,
-        });
-      }
-    };
-
-    void run();
+    // Load current user data
+    const user = AuthManager.getUserById(fresh.userId);
+    if (user) {
+      setFormData({
+        fullName: user.fullName,
+        username: user.username,
+        email: user.email,
+      });
+    }
   }, [navigate]);
 
   const validateForm = () => {
@@ -69,37 +66,37 @@ export default function Settings() {
     setSuccessMessage("");
 
     // Update user profile
-    const result = await AuthManager.updateUser(currentUser!.userId, {
+    const result = AuthManager.updateUser(currentUser!.userId, {
       fullName: formData.fullName,
       username: formData.username,
       email: formData.email,
     });
 
-    setIsLoading(false);
-
-    if (result.success) {
-      setCurrentUser(AuthManager.getCurrentUser());
-      setSuccessMessage(result.message);
-      setIsEditing(false);
-    } else {
-      setErrors({ general: result.message });
-    }
+    setTimeout(() => {
+      setIsLoading(false);
+      
+      if (result.success) {
+        // Refresh cookie-backed user data so UI updates immediately
+        setCurrentUser(AuthManager.getCurrentUser());
+        setSuccessMessage(result.message);
+        setIsEditing(false);
+      } else {
+        setErrors({ general: result.message });
+      }
+    }, 500);
   };
 
   const handleCancel = () => {
-    const run = async () => {
-      if (currentUser) {
-        const user = await AuthManager.getUserById(currentUser.userId);
-        if (user) {
-          setFormData({
-            fullName: user.fullName,
-            username: user.username,
-            email: user.email,
-          });
-        }
+    if (currentUser) {
+      const user = AuthManager.getUserById(currentUser.userId);
+      if (user) {
+        setFormData({
+          fullName: user.fullName,
+          username: user.username,
+          email: user.email,
+        });
       }
-    };
-    void run();
+    }
     setIsEditing(false);
     setErrors({});
     setSuccessMessage("");
@@ -111,17 +108,12 @@ export default function Settings() {
 
   return (
     <div className="flex-1 overflow-auto w-full">
-<<<<<<< HEAD
       <div className="p-6 md:p-8 md:px-12 lg:px-20 w-full max-w-4xl mx-auto">
-=======
-      <div className="p-6 md:p-8 md:px-12 lg:px-20 w-full">
->>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
         <h1 className="text-3xl font-bold text-foreground mb-4">Settings</h1>
         <p className="text-muted-foreground mb-6">
           Manage your profile and account settings.
         </p>
 
-<<<<<<< HEAD
         {/* Profile Section */}
         <div className="bg-card rounded-lg border border-border p-6 mb-6">
           <div className="flex items-center justify-between mb-6">
@@ -289,12 +281,6 @@ export default function Settings() {
               </button>
             </div>
           </div>
-=======
-        <div className="bg-card rounded-lg border border-border p-8 text-center">
-          <p className="text-muted-foreground">
-            This page is coming soon. Continue prompting Fusion to build out the content for this page!
-          </p>
->>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
         </div>
       </div>
     </div>

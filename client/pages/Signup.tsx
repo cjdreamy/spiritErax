@@ -2,10 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Logo } from "@/components/Logo";
 import { Eye, EyeOff, Check, X } from "lucide-react";
-<<<<<<< HEAD
 import { AuthManager } from "@/lib/auth";
-=======
->>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -54,14 +51,11 @@ export default function Signup() {
     return Object.keys(newErrors).length === 0;
   };
 
-<<<<<<< HEAD
   const extractUsername = (fullName: string) => {
     // Extract username from full name (remove spaces and make lowercase)
     return fullName.replace(/\s+/g, '').toLowerCase();
   };
 
-=======
->>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -76,38 +70,31 @@ export default function Signup() {
     if (!validateForm()) return;
 
     setIsLoading(true);
-<<<<<<< HEAD
     
     // Use AuthManager for registration
     const username = extractUsername(formData.fullName);
-    const result = await AuthManager.register(username, formData.fullName, formData.email, formData.password);
+    const result = AuthManager.register(username, formData.fullName, formData.email, formData.password);
     
-    if (result.success) {
-      const loginResult = await AuthManager.login(formData.email, formData.password);
-      setIsLoading(false);
-
-      if (loginResult.success) {
-        navigate("/dashboard");
-      } else {
-        navigate("/login");
-      }
-      return;
-    }
-
-    setIsLoading(false);
-    if (result.message.includes("Email")) {
-      setErrors({ email: result.message });
-    } else {
-      setErrors({ fullName: result.message });
-    }
-=======
-    // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      // Navigate to dashboard on successful signup
-      navigate("/dashboard");
-    }, 1000);
->>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
+      
+      if (result.success) {
+        // Auto-login after successful registration
+        const loginResult = AuthManager.login(formData.email, formData.password);
+        if (loginResult.success) {
+          navigate("/dashboard");
+        } else {
+          navigate("/login");
+        }
+      } else {
+        // Show error message
+        if (result.message.includes('Email')) {
+          setErrors({ email: result.message });
+        } else {
+          setErrors({ fullName: result.message });
+        }
+      }
+    }, 500);
   };
 
   return (
@@ -145,11 +132,7 @@ export default function Signup() {
                 value={formData.fullName}
                 onChange={handleChange}
                 placeholder="John Doe"
-<<<<<<< HEAD
                 className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 inputcolor ${
-=======
-                className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 ${
->>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
                   errors.fullName
                     ? "border-red-500 bg-red-50"
                     : "border-gray-200 bg-gray-50 focus:bg-white"
@@ -173,11 +156,7 @@ export default function Signup() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="your@email.com"
-<<<<<<< HEAD
                 className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 inputcolor ${
-=======
-                className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 ${
->>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
                   errors.email
                     ? "border-red-500 bg-red-50"
                     : "border-gray-200 bg-gray-50 focus:bg-white"
@@ -202,11 +181,7 @@ export default function Signup() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-<<<<<<< HEAD
                   className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 inputcolor ${
-=======
-                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 ${
->>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
                     errors.password
                       ? "border-red-500 bg-red-50"
                       : "border-gray-200 bg-gray-50 focus:bg-white"
@@ -268,11 +243,7 @@ export default function Signup() {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   placeholder="••••••••"
-<<<<<<< HEAD
                   className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 inputcolor ${
-=======
-                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 ${
->>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
                     errors.confirmPassword
                       ? "border-red-500 bg-red-50"
                       : "border-gray-200 bg-gray-50 focus:bg-white"
@@ -320,11 +291,7 @@ export default function Signup() {
           {/* Sign In Link */}
           <Link
             to="/login"
-<<<<<<< HEAD
             className="w-full block text-center bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-all"
-=======
-            className="w-full block text-center bg-gray-100 text-gray-900 font-bold py-3 rounded-lg hover:bg-gray-200 transition-all"
->>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
           >
             Sign In
           </Link>
