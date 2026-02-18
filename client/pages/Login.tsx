@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Logo } from "@/components/Logo";
 import { Eye, EyeOff } from "lucide-react";
@@ -43,18 +43,15 @@ export default function Login() {
     setIsLoading(true);
     
     // Use AuthManager for authentication
-    const result = AuthManager.login(email, password);
-    
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      if (result.success) {
-        navigate(from, { replace: true });
-      } else {
-        // Show error message
-        setErrors({ email: result.message });
-      }
-    }, 500); // Shorter delay for better UX
+    const result = await AuthManager.login(email, password);
+    setIsLoading(false);
+
+    if (result.success) {
+      navigate(from, { replace: true });
+    } else {
+      // Show error message
+      setErrors({ email: result.message });
+    }
   };
 
   return (

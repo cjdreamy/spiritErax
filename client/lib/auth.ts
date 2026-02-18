@@ -5,7 +5,6 @@ export interface User {
   username: string;
   fullName: string;
   email: string;
-  password: string; // In production, this should be hashed
   createdAt: string;
 }
 
@@ -42,72 +41,59 @@ export class CookieManager {
   }
 }
 
-// Simulated JSON database (in production, this would be on the server)
-const DB_KEY = 'spiritEraX_users_db';
 const SESSION_COOKIE = 'spiritEraX_session';
 
+type ApiSuccess<T> = { success: true } & T;
+type ApiFailure = { success: false; message: string };
+type ApiResponse<T> = ApiSuccess<T> | ApiFailure;
+
+async function parseJsonResponse<T>(res: Response): Promise<ApiResponse<T>> {
+  const data = (await res.json().catch(() => ({}))) as any;
+  if (!res.ok) {
+    return { success: false, message: data?.message ?? "Request failed" };
+  }
+  return data as ApiResponse<T>;
+}
+
 export class AuthManager {
-  // Get all users from localStorage
-  private static getUsers(): User[] {
-    const users = localStorage.getItem(DB_KEY);
-    return users ? JSON.parse(users) : [];
+  static async register(
+    username: string,
+    fullName: string,
+    email: string,
+    password: string
+  ): Promise<{ success: boolean; message: string; user?: User }> {
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, fullName, email, password }),
+    });
+
+    const data = await parseJsonResponse<{ message: string; user: User }>(res);
+    if (!data.success) return data;
+    return { success: true, message: data.message, user: data.user };
   }
 
-  // Save users to localStorage
-  private static saveUsers(users: User[]): void {
-    localStorage.setItem(DB_KEY, JSON.stringify(users));
-  }
+  static async login(email: string, password: string): Promise<{ success: boolean; message: string; user?: User }> {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-  // Register new user
-  static register(username: string, fullName: string, email: string, password: string): { success: boolean; message: string } {
-    const users = this.getUsers();
-    
-    // Check if user already exists
-    if (users.some(user => user.email === email)) {
-      return { success: false, message: 'Email already registered' };
-    }
-    
-    if (users.some(user => user.username === username)) {
-      return { success: false, message: 'Username already taken' };
-    }
-
-    // Create new user
-    const newUser: User = {
-      id: Date.now().toString(),
-      username,
-      fullName,
-      email,
-      password, // In production, hash this password
-      createdAt: new Date().toISOString()
-    };
-
-    users.push(newUser);
-    this.saveUsers(users);
-    
-    return { success: true, message: 'Account created successfully' };
-  }
-
-  // Login user
-  static login(email: string, password: string): { success: boolean; message: string; user?: User } {
-    const users = this.getUsers();
-    const user = users.find(u => u.email === email && u.password === password);
-    
-    if (!user) {
-      return { success: false, message: 'Invalid email or password' };
-    }
+    const data = await parseJsonResponse<{ message: string; user: User }>(res);
+    if (!data.success) return data;
 
     // Create session cookie (expires in 24 hours)
     const session = {
-      userId: user.id,
-      expiresAt: Date.now() + (24 * 60 * 60 * 1000), // 24 hours
-      username: user.username,
-      fullName: user.fullName,
-      email: user.email
+      userId: data.user.id,
+      expiresAt: Date.now() + 24 * 60 * 60 * 1000,
+      username: data.user.username,
+      fullName: data.user.fullName,
+      email: data.user.email,
     };
-    
     CookieManager.setCookie(SESSION_COOKIE, JSON.stringify(session), 24);
-    
-    return { success: true, message: 'Login successful', user };
+
+    return { success: true, message: data.message, user: data.user };
   }
 
   // Logout user
@@ -147,51 +133,41 @@ export class AuthManager {
   }
 
   // Get user by ID
-  static getUserById(id: string): User | null {
-    const users = this.getUsers();
-    return users.find(u => u.id === id) || null;
+  static async getUserById(id: string): Promise<User | null> {
+    const res = await fetch(`/api/auth/users/${encodeURIComponent(id)}`);
+    const data = await parseJsonResponse<{ user: User }>(res);
+    if (!data.success) return null;
+    return data.user;
   }
 
   // Update user profile
-  static updateUser(id: string, updates: Partial<Pick<User, 'username' | 'fullName' | 'email'>>): { success: boolean; message: string } {
-    const users = this.getUsers();
-    const userIndex = users.findIndex(u => u.id === id);
-    
-    if (userIndex === -1) {
-      return { success: false, message: 'User not found' };
-    }
+  static async updateUser(
+    id: string,
+    updates: Partial<Pick<User, "username" | "fullName" | "email">>
+  ): Promise<{ success: boolean; message: string; user?: User }> {
+    const res = await fetch(`/api/auth/users/${encodeURIComponent(id)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updates),
+    });
 
-    // Check if email is being updated and already exists
-    if (updates.email && updates.email !== users[userIndex].email) {
-      if (users.some(u => u.email === updates.email)) {
-        return { success: false, message: 'Email already registered' };
-      }
-    }
-
-    // Check if username is being updated and already exists
-    if (updates.username && updates.username !== users[userIndex].username) {
-      if (users.some(u => u.username === updates.username)) {
-        return { success: false, message: 'Username already taken' };
-      }
-    }
-
-    users[userIndex] = { ...users[userIndex], ...updates };
-    this.saveUsers(users);
+    const data = await parseJsonResponse<{ message: string; user: User }>(res);
+    if (!data.success) return data;
 
     // Update session cookie if username/email/fullName changed
     const currentUser = this.getCurrentUser();
     if (currentUser && currentUser.userId === id) {
       const session = {
         userId: id,
-        expiresAt: Date.now() + (24 * 60 * 60 * 1000),
-        username: updates.username || currentUser.username,
-        fullName: updates.fullName || currentUser.fullName,
-        email: updates.email || currentUser.email
+        expiresAt: Date.now() + 24 * 60 * 60 * 1000,
+        username: data.user.username,
+        fullName: data.user.fullName,
+        email: data.user.email,
       };
       CookieManager.setCookie(SESSION_COOKIE, JSON.stringify(session), 24);
     }
 
-    return { success: true, message: 'Profile updated successfully' };
+    return { success: true, message: data.message, user: data.user };
   }
 
   // Get user initials for avatar
