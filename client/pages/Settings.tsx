@@ -17,23 +17,26 @@ export default function Settings() {
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    const fresh = AuthManager.getCurrentUser();
-    setCurrentUser(fresh);
+    const run = async () => {
+      const fresh = AuthManager.getCurrentUser();
+      setCurrentUser(fresh);
 
-    if (!fresh) {
-      navigate("/login");
-      return;
-    }
+      if (!fresh) {
+        navigate("/login");
+        return;
+      }
 
-    // Load current user data
-    const user = AuthManager.getUserById(fresh.userId);
-    if (user) {
-      setFormData({
-        fullName: user.fullName,
-        username: user.username,
-        email: user.email,
-      });
-    }
+      const user = await AuthManager.getUserById(fresh.userId);
+      if (user) {
+        setFormData({
+          fullName: user.fullName,
+          username: user.username,
+          email: user.email,
+        });
+      }
+    };
+
+    void run();
   }, [navigate]);
 
   const validateForm = () => {
@@ -66,37 +69,37 @@ export default function Settings() {
     setSuccessMessage("");
 
     // Update user profile
-    const result = AuthManager.updateUser(currentUser!.userId, {
+    const result = await AuthManager.updateUser(currentUser!.userId, {
       fullName: formData.fullName,
       username: formData.username,
       email: formData.email,
     });
 
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      if (result.success) {
-        // Refresh cookie-backed user data so UI updates immediately
-        setCurrentUser(AuthManager.getCurrentUser());
-        setSuccessMessage(result.message);
-        setIsEditing(false);
-      } else {
-        setErrors({ general: result.message });
-      }
-    }, 500);
+    setIsLoading(false);
+
+    if (result.success) {
+      setCurrentUser(AuthManager.getCurrentUser());
+      setSuccessMessage(result.message);
+      setIsEditing(false);
+    } else {
+      setErrors({ general: result.message });
+    }
   };
 
   const handleCancel = () => {
-    if (currentUser) {
-      const user = AuthManager.getUserById(currentUser.userId);
-      if (user) {
-        setFormData({
-          fullName: user.fullName,
-          username: user.username,
-          email: user.email,
-        });
+    const run = async () => {
+      if (currentUser) {
+        const user = await AuthManager.getUserById(currentUser.userId);
+        if (user) {
+          setFormData({
+            fullName: user.fullName,
+            username: user.username,
+            email: user.email,
+          });
+        }
       }
-    }
+    };
+    void run();
     setIsEditing(false);
     setErrors({});
     setSuccessMessage("");

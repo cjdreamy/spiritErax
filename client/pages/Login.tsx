@@ -41,20 +41,15 @@ export default function Login() {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    
-    // Use AuthManager for authentication
-    const result = AuthManager.login(email, password);
-    
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      if (result.success) {
-        navigate(from, { replace: true });
-      } else {
-        // Show error message
-        setErrors({ email: result.message });
-      }
-    }, 500); // Shorter delay for better UX
+
+    const result = await AuthManager.login(email, password);
+    setIsLoading(false);
+
+    if (result.success) {
+      navigate(from, { replace: true });
+    } else {
+      setErrors({ email: result.message });
+    }
   };
 
   return (

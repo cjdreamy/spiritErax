@@ -1,0 +1,11 @@
+[
+  {
+    "id": "946fb21d-cdd8-4c01-8780-76e0b417e39b",
+    "username": "cjdev",
+    "fullName": "Cj dev",
+    "email": "cj@cj.dev",
+    "passwordHash": "f292bb49dedaf23f71d82116ce65ca23b4c0b4b236b60dbe0bf9b4fdfdb85e419ef55f6264bba57983fc7616cdf1c478168bd890588625a02f84889fa920807a",
+    "passwordSalt": "00b62b0f70f4fa8759cd2bf511afbf78",
+    "createdAt": "2026-02-18T11:34:59.042Z"
+  }
+]

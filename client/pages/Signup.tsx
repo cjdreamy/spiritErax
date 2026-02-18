@@ -73,28 +73,26 @@ export default function Signup() {
     
     // Use AuthManager for registration
     const username = extractUsername(formData.fullName);
-    const result = AuthManager.register(username, formData.fullName, formData.email, formData.password);
+    const result = await AuthManager.register(username, formData.fullName, formData.email, formData.password);
     
-    setTimeout(() => {
+    if (result.success) {
+      const loginResult = await AuthManager.login(formData.email, formData.password);
       setIsLoading(false);
-      
-      if (result.success) {
-        // Auto-login after successful registration
-        const loginResult = AuthManager.login(formData.email, formData.password);
-        if (loginResult.success) {
-          navigate("/dashboard");
-        } else {
-          navigate("/login");
-        }
+
+      if (loginResult.success) {
+        navigate("/dashboard");
       } else {
-        // Show error message
-        if (result.message.includes('Email')) {
-          setErrors({ email: result.message });
-        } else {
-          setErrors({ fullName: result.message });
-        }
+        navigate("/login");
       }
-    }, 500);
+      return;
+    }
+
+    setIsLoading(false);
+    if (result.message.includes("Email")) {
+      setErrors({ email: result.message });
+    } else {
+      setErrors({ fullName: result.message });
+    }
   };
 
   return (
