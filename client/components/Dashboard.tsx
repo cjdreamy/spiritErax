@@ -66,6 +66,7 @@ export function Dashboard() {
   const currentUser = AuthManager.getCurrentUser();
   
   return (
+<<<<<<< HEAD
     <div className="flex-1 overflow-auto w-full relative">
       {/* Background Image */}
       <div className="absolute inset-0 opacity-10">
@@ -90,10 +91,23 @@ export function Dashboard() {
               <User className="w-5 h-5 text-gray-600" />
             </button>
           </div>
+=======
+    <div className="flex-1 overflow-auto w-full">
+      {/* Header */}
+      <div className="bg-gradient-to-b from-primary/20 to-transparent p-6 md:p-8 md:px-12 lg:px-20 border-b border-border w-full">
+        <div className="w-full">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-muted-foreground">
+            Explore our hubs and begin your spiritual journey
+          </p>
+>>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
         </div>
       </div>
 
       {/* Content */}
+<<<<<<< HEAD
       <div className="relative z-10 p-6 md:p-8 md:px-12 lg:px-20 w-full">
         {/* Main Title */}
         <div className="text-center mb-8">
@@ -111,6 +125,15 @@ export function Dashboard() {
           
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+=======
+      <div className="p-6 md:p-8 md:px-12 lg:px-20 w-full">
+        {/* Quick Actions */}
+        <div className="mb-12">
+          <h2 className="text-lg font-semibold text-foreground mb-4">
+            Get Started
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-4">
+>>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
             <Link
               to="/catholic-hub"
               className="inline-flex items-center justify-center px-8 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors shadow-md"

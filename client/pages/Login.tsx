@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Logo } from "@/components/Logo";
@@ -7,15 +8,27 @@ import { AuthManager } from "@/lib/auth";
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
+=======
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Logo } from "@/components/Logo";
+import { Eye, EyeOff } from "lucide-react";
+
+export default function Login() {
+  const navigate = useNavigate();
+>>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
 
+<<<<<<< HEAD
   // Get the redirect path from location state
   const from = (location.state as any)?.from?.pathname || "/dashboard";
 
+=======
+>>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
   const validateForm = () => {
     const newErrors: typeof errors = {};
 
@@ -41,6 +54,7 @@ export default function Login() {
     if (!validateForm()) return;
 
     setIsLoading(true);
+<<<<<<< HEAD
 
     const result = await AuthManager.login(email, password);
     setIsLoading(false);
@@ -50,6 +64,14 @@ export default function Login() {
     } else {
       setErrors({ email: result.message });
     }
+=======
+    // Simulate API call
+    setTimeout(() => {
+      setIsLoading(false);
+      // Navigate to dashboard on successful login
+      navigate("/dashboard");
+    }, 1000);
+>>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
   };
 
   return (
@@ -78,10 +100,17 @@ export default function Login() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email Field */}
             <div>
+<<<<<<< HEAD
               <label className="block text-sm font-semibold text-gray-900 mb-2 ">
                 Email Address
               </label>
               <input 
+=======
+              <label className="block text-sm font-semibold text-gray-900 mb-2">
+                Email Address
+              </label>
+              <input
+>>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
                 type="email"
                 value={email}
                 onChange={(e) => {
@@ -89,7 +118,11 @@ export default function Login() {
                   if (errors.email) setErrors({ ...errors, email: undefined });
                 }}
                 placeholder="your@email.com"
+<<<<<<< HEAD
                 className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 inputcolor ${
+=======
+                className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 ${
+>>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
                   errors.email
                     ? "border-red-500 bg-red-50"
                     : "border-gray-200 bg-gray-50 focus:bg-white"
@@ -116,7 +149,11 @@ export default function Login() {
                     if (errors.password) setErrors({ ...errors, password: undefined });
                   }}
                   placeholder="••••••••"
+<<<<<<< HEAD
                   className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 inputcolor ${
+=======
+                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 ${
+>>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
                     errors.password
                       ? "border-red-500 bg-red-50"
                       : "border-gray-200 bg-gray-50 focus:bg-white"
@@ -143,7 +180,11 @@ export default function Login() {
 
             {/* Forgot Password Link */}
             <div className="text-right">
+<<<<<<< HEAD
               <a href="#" className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
+=======
+              <a href="#" className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors">
+>>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
                 Forgot password?
               </a>
             </div>
@@ -171,16 +212,27 @@ export default function Login() {
           {/* Sign Up Link */}
           <Link
             to="/signup"
+<<<<<<< HEAD
             className="w-full block text-center bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-all"
+=======
+            className="w-full block text-center bg-gray-100 text-gray-900 font-bold py-3 rounded-lg hover:bg-gray-200 transition-all"
+>>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
           >
             Create Account
           </Link>
         </div>
 
+<<<<<<< HEAD
         {/*  */}
         {/* <p className="text-center text-blue-200 text-sm mt-6">
           This is a demo. Use any credentials to continue.
         </p> */}
+=======
+        {/* Demo Note */}
+        <p className="text-center text-blue-200 text-sm mt-6">
+          This is a demo. Use any credentials to continue.
+        </p>
+>>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
       </div>
     </div>
   );

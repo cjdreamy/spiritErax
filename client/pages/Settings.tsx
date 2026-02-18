@@ -111,12 +111,17 @@ export default function Settings() {
 
   return (
     <div className="flex-1 overflow-auto w-full">
+<<<<<<< HEAD
       <div className="p-6 md:p-8 md:px-12 lg:px-20 w-full max-w-4xl mx-auto">
+=======
+      <div className="p-6 md:p-8 md:px-12 lg:px-20 w-full">
+>>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
         <h1 className="text-3xl font-bold text-foreground mb-4">Settings</h1>
         <p className="text-muted-foreground mb-6">
           Manage your profile and account settings.
         </p>
 
+<<<<<<< HEAD
         {/* Profile Section */}
         <div className="bg-card rounded-lg border border-border p-6 mb-6">
           <div className="flex items-center justify-between mb-6">
@@ -284,6 +289,12 @@ export default function Settings() {
               </button>
             </div>
           </div>
+=======
+        <div className="bg-card rounded-lg border border-border p-8 text-center">
+          <p className="text-muted-foreground">
+            This page is coming soon. Continue prompting Fusion to build out the content for this page!
+          </p>
+>>>>>>> af10d5f832080b50b1efd34fb3003c4a1069ea42
         </div>
       </div>
     </div>
