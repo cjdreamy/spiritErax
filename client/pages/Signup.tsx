@@ -98,7 +98,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4 md:p-8 py-12 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-start justify-center p-4 md:p-8 py-12 relative ">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
@@ -107,24 +107,23 @@ export default function Signup() {
       </div>
 
       {/* Main Container */}
-      <div className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-16 relative z-10">
+      <div className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-start gap-8 lg:gap-16 relative z-10 min-h-0 overflow-y-auto">
         {/* Left Side - Logo and Brand */}
-        <div className="flex-1 text-center lg:text-left">
+        <div className="flex-1 text-center lg:text-left py-8">
           <div className="mb-8">
             {/* Logo */}
-            <div className="flex justify-center lg:justify-start mb-6">
-              <div className="relative">
-                <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-blue-400 rounded-2xl flex items-center justify-center shadow-2xl">
-                  <span className="text-white text-3xl font-bold">S</span>
-                </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-400 rounded-full animate-pulse"></div>
-              </div>
+            <div className="flex justify-center lg:justify-start mb-8">
+              <img 
+                src="/logo_spritErax.jpeg" 
+                alt="SpiritEraX Logo" 
+                className="w-32 h-32 object-contain"
+              />
             </div>
             <h1 className="text-5xl lg:text-6xl font-bold text-white mb-4">
               Spirit<span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Era</span>X
             </h1>
             <p className="text-xl text-blue-200/80 mb-6 max-w-md">
-              Join the next generation of digital experiences
+              Join next generation of digital experiences
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <div className="flex items-center gap-2 text-white/80">
@@ -140,7 +139,7 @@ export default function Signup() {
         </div>
 
         {/* Right Side - Signup Form */}
-        <div className="w-full lg:w-1/2 max-w-md">
+        <div className="w-full lg:w-1/2 max-w-md py-8">
           {/* Back button */}
           <Link
             to="/"

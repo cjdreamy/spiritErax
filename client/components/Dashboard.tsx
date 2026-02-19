@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BookOpen, Zap, Users, Lock, Sparkles, Search, User } from "lucide-react";
+import { BookOpen, Zap, Users, Lock, Sparkles, Search, User, Settings, Bell, Home, Compass, MessageSquare, Heart, Star, TrendingUp } from "lucide-react";
 import SExlogo from '/logo_spritErax.jpeg';
 import { AuthManager } from "@/lib/auth";
 
@@ -10,6 +10,8 @@ interface HubCard {
   description: string[];
   path?: string;
   isLocked?: boolean;
+  stats?: string;
+  rating?: number;
 }
 
 const HUBS: HubCard[] = [
@@ -27,6 +29,8 @@ const HUBS: HubCard[] = [
       "More Scriptures",
     ],
     path: "/catholic-hub",
+    stats: "2.5k users",
+    rating: 4.8,
   },
   {
     id: "ai",
@@ -38,27 +42,44 @@ const HUBS: HubCard[] = [
       "Answer spiritual questions",
     ],
     isLocked: true,
+    stats: "Coming Soon",
+    rating: 0,
   },
   {
     id: "machine",
     title: "SpiritEraX Machine Section",
     icon: <Zap className="w-8 h-8" />,
-    description: ["Coming Soon block"],
+    description: ["Advanced spiritual tools"],
     isLocked: true,
+    stats: "Coming Soon",
+    rating: 0,
   },
   {
     id: "social",
-    title: "Social Communication are",
+    title: "Social Community",
     icon: <Users className="w-8 h-8" />,
-    description: ["Coming Soon"],
+    description: ["Connect with believers"],
     isLocked: true,
+    stats: "Coming Soon",
+    rating: 0,
   },
   {
-    id: "future",
-    title: "Coming Soon block future",
-    icon: <Sparkles className="w-8 h-8" />,
-    description: ["Future vision"],
-    isLocked: true,
+    id: "marketplace",
+    title: "Marketplace",
+    icon: <Heart className="w-8 h-8" />,
+    description: ["Spiritual resources & more"],
+    path: "/marketplace",
+    stats: "150+ items",
+    rating: 4.6,
+  },
+  {
+    id: "channel",
+    title: "Channel Hub",
+    icon: <MessageSquare className="w-8 h-8" />,
+    description: ["Live streams & content"],
+    path: "/channel-hub",
+    stats: "50+ channels",
+    rating: 4.7,
   },
 ];
 
@@ -72,127 +93,163 @@ export function Dashboard() {
         <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${SExlogo})` }}></div>
       </div>
       
-      {/* Header with Search and Profile */}
-      <div className="relative z-10 bg-white/90 backdrop-blur-sm border-b border-gray-200 p-4">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex-1 max-w-md">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500 bg-white"
+      {/* Header Navigation */}
+      <header className="relative z-10 bg-white/90 backdrop-blur-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo - Clickable to redirect to dashboard */}
+            <Link to="/dashboard" className="flex items-center hover:opacity-80 transition-opacity">
+              <img 
+                src={SExlogo} 
+                alt="SpiritEraX Logo" 
+                className="w-10 h-10 object-contain mr-3"
               />
+              <span className="text-gray-900 font-bold text-xl">SpiritEraX</span>
+            </Link>
+
+            {/* Search Bar */}
+            <div className="flex-1 max-w-2xl mx-8">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search hubs, content, people..."
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 bg-white transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Right Side Icons */}
+            <div className="flex items-center gap-3">
+              <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-900">
+                <Bell className="w-5 h-5" />
+              </button>
+              <Link to="/settings" className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-900">
+                <Settings className="w-5 h-5" />
+              </Link>
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                <User className="w-4 h-4 text-white" />
+              </div>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-              <User className="w-5 h-5 text-gray-600" />
-            </button>
-          </div>
         </div>
-      </div>
+      </header>
 
-      {/* Content */}
-      <div className="relative z-10 p-6 md:p-8 md:px-12 lg:px-20 w-full">
-        {/* Main Title */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            SpiritEraX - Faith x Tech for All
+      {/* Main Content */}
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Welcome Section */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            Welcome back, {currentUser?.fullName || 'User'}! 👋
           </h1>
-          <p className="text-xl text-gray-600 mb-2">
-            Welcome to SpiritEraX, where faith meets technology
+          <p className="text-gray-600 text-lg">
+            Continue your spiritual journey with our digital tools
           </p>
-          {currentUser && (
-            <p className="text-lg text-blue-600 font-medium mb-8">
-              Welcome back, {currentUser.fullName || 'User'}!
-            </p>
-          )}
-          
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Link
-              to="/catholic-hub"
-              className="inline-flex items-center justify-center px-8 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors shadow-md"
-            >
-              Explore Platform
-            </Link>
-            <button className="inline-flex items-center justify-center px-8 py-3 rounded-lg border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-50 transition-colors">
-              Join Community
-            </button>
+        </div>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl p-4 shadow-md">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm">Active Users</p>
+                <p className="text-gray-900 text-2xl font-bold">2.5K</p>
+              </div>
+              <TrendingUp className="w-8 h-8 text-green-500" />
+            </div>
+          </div>
+          <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl p-4 shadow-md">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm">Total Hubs</p>
+                <p className="text-gray-900 text-2xl font-bold">6</p>
+              </div>
+              <Compass className="w-8 h-8 text-blue-500" />
+            </div>
+          </div>
+          <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl p-4 shadow-md">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm">Prayers Today</p>
+                <p className="text-gray-900 text-2xl font-bold">142</p>
+              </div>
+              <Heart className="w-8 h-8 text-purple-500" />
+            </div>
+          </div>
+          <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl p-4 shadow-md">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm">Avg Rating</p>
+                <p className="text-gray-900 text-2xl font-bold">4.8</p>
+              </div>
+              <Star className="w-8 h-8 text-yellow-500" />
+            </div>
           </div>
         </div>
 
         {/* Hub Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {HUBS.map((hub) => (
             <div
               key={hub.id}
-              className={`rounded-xl p-6 transition-all relative bg-white border border-gray-200 shadow-md hover:shadow-lg ${
-                hub.isLocked ? "opacity-75" : "hover:border-blue-300"
+              className={`bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 transition-all hover:transform hover:scale-[1.02] hover:shadow-lg ${
+                hub.isLocked ? "opacity-60" : "hover:border-blue-300"
               }`}
             >
-              {/* Lock icon for locked hubs */}
-              {hub.isLocked && (
-                <div className="absolute top-4 right-4">
-                  <Lock className="w-5 h-5 text-gray-400" />
-                </div>
-              )}
-
-              {/* Icon */}
-              <div
-                className={`mb-4 p-3 rounded-lg w-fit ${
+              {/* Header */}
+              <div className="flex items-start justify-between mb-4">
+                <div className={`p-3 rounded-xl ${
                   hub.isLocked
                     ? "bg-gray-100 text-gray-400"
                     : "bg-blue-100 text-blue-600"
-                }`}
-              >
-                {hub.icon}
+                }`}>
+                  {hub.icon}
+                </div>
+                {hub.isLocked && (
+                  <Lock className="w-5 h-5 text-gray-400" />
+                )}
               </div>
 
               {/* Content */}
-              <h3 className="text-lg font-bold text-gray-900 mb-3">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
                 {hub.title}
               </h3>
+              
+              <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                {hub.description[0]}
+              </p>
 
-              {hub.description.length > 0 ? (
-                <ul className="space-y-2 mb-6">
-                  {hub.description.map((item, idx) => (
-                    <li
-                      key={idx}
-                      className="text-sm text-gray-600 flex items-start gap-2"
-                    >
-                      <span className="text-blue-600 mt-1">•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-sm text-gray-500 mb-6">
-                  Coming Soon
-                </p>
-              )}
+              {/* Stats */}
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-gray-500 text-sm">{hub.stats}</span>
+                {hub.rating > 0 && (
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                    <span className="text-gray-600 text-sm">{hub.rating}</span>
+                  </div>
+                )}
+              </div>
 
-              {/* Action button */}
+              {/* Action Button */}
               {hub.isLocked ? (
                 <button
                   disabled
-                  className="w-full py-2 px-4 rounded-lg bg-gray-100 text-gray-500 font-semibold cursor-not-allowed"
+                  className="w-full py-3 px-4 rounded-xl bg-gray-100 text-gray-500 font-semibold cursor-not-allowed border border-gray-200"
                 >
                   Coming Soon
                 </button>
               ) : (
                 <Link
                   to={hub.path || "/"}
-                  className="w-full inline-block py-2 px-4 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors text-center"
+                  className="w-full inline-block py-3 px-4 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all text-center"
                 >
-                  Explore
+                  Explore Hub
                 </Link>
               )}
             </div>
           ))}
         </div>
-      </div>
+      </main>
     </div>
   );
 }

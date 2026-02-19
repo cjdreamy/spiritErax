@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "id": "e61db94d-c25c-42a9-aed1-c08d15cf5a32",
+    "username": "cjderamy",
+    "fullName": "cj deramy",
+    "email": "cj@cjdreamy.dev",
+    "passwordHash": "0f3e2475432cb7ca0d48e8c7eedd8e0cd4ebd0eb912764168d10427921e2ad821ecc369d38e959192565b289e3703b6f116443dd4fdd9e96556d982f78d54267",
+    "passwordSalt": "3f5053146638afeb610ce6796cffa6c1",
+    "createdAt": "2026-02-19T16:35:25.833Z"
+  },
+  {
+    "id": "b3340531-6547-424a-b61e-17c0a02f5ced",
+    "username": "admindev",
+    "fullName": "admin dev",
+    "email": "admin@cj.dev",
+    "passwordHash": "28bf76d990152989f588846d92b6cb6ac6aef31c656b65c546d751ae53ad335de6e6deeeda453e4d35cdc44ae4cfdfa632ab103dc7dc9d8ba55718aba17c7570",
+    "passwordSalt": "aa309b7231553a4f4bd917f5b69f4c60",
+    "createdAt": "2026-02-19T16:47:34.801Z"
+  }
+]
