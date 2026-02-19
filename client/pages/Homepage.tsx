@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Logo } from "@/components/Logo";
 import cross from '/icons/cross.png'
+import SExlogo from '../../public/logo_spritErax.jpeg'
 import future from '/icons/future_feautures.png'
 import community from '/icons/community.png'
 import ai from '/icons/ai.png'
@@ -8,12 +9,12 @@ import comming_soon from '/icons/comming_soon.png'
 import marketplace from "/icons/market_place.png";
 export default function Homepage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 w-full">
+    <main className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 w-full" style={{ backgroundImage: `url(${SExlogo})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
       {/* Navigation Bar */}
       <nav className="flex items-center justify-between p-6 md:p-8 px-6 md:px-12 w-full">
         <div className="flex items-center gap-3">
           <Logo size="sm" />
-          <span className="text-xl font-bold text-white">SPIRITERAX</span>
+          <span className="text-xl font-bold text-white">SpiritEraX</span>
         </div>
         <Link
           to="/login"
@@ -33,7 +34,7 @@ export default function Homepage() {
           </h1>
 
           {/* Subheading */}
-          <p className="text-lg md:text-xl text-blue-100 mb-12 leading-relaxed">
+          <p className="text-lg md:text-xl text-blue-100 mb-12 leading-relaxed " style={{color: ''}}>
             Welcome to SpiritEraX, where faith and technology<br />
             unite like never before.
           </p>

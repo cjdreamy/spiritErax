@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import SExlogo from '/logo_spritErax.jpeg'
+import sexlogo from '/logo_spritErax2notext.jpeg'
 
 export function Loader() {
   const [dots, setDots] = useState(3)
@@ -13,7 +14,7 @@ export function Loader() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 flex flex-col items-center justify-center text-white">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 flex flex-col items-center justify-center text-white" >
       {/* Logo */}
       <div className="mb-8">
         <img 

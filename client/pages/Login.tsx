@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Logo } from "@/components/Logo";
 import { Eye, EyeOff } from "lucide-react";
 import { AuthManager } from "@/lib/auth";
+import SExlogo from '../../public/logo_spritErax2notext.jpeg'
 
 export default function Login() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Get the redirect path from location state
+  
   const from = (location.state as any)?.from?.pathname || "/dashboard";
 
   const validateForm = () => {
@@ -82,6 +84,9 @@ export default function Login() {
             <p className="text-xl text-blue-200/80 mb-6 max-w-md">
               Welcome to next generation of digital experiences
             </p>
+            <p className="text-xl text-blue-200/80 mb-6 max-w-md">
+              Gather in Faith. Grow in the Word. Connect in Spirit
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <div className="flex items-center gap-2 text-white/80">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -106,7 +111,7 @@ export default function Login() {
           </Link>
 
           {/* Glass Form Card */}
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 md:p-10">
+          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 md:p-10" style={{ backgroundImage: `url(${SExlogo})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
               <p className="text-blue-200/80">Sign in to continue your journey</p>
@@ -214,6 +219,12 @@ export default function Login() {
             >
               Create Account
             </Link>
+            <br />
+            <br />
+            
+            <p className="text-sm text-white-200/80 mb-6 max-w-md">
+              "for i know the plans i have for you..." -Jer 29.11
+            </p>
           </div>
         </div>
       </div>

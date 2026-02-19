@@ -96,6 +96,7 @@ export function Dashboard() {
       {/* Header Navigation */}
       <header className="relative z-10 bg-white/90 backdrop-blur-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Top Navigation Bar */}
           <div className="flex items-center justify-between h-16">
             {/* Logo - Clickable to redirect to dashboard */}
             <Link to="/dashboard" className="flex items-center hover:opacity-80 transition-opacity">
@@ -107,17 +108,24 @@ export function Dashboard() {
               <span className="text-gray-900 font-bold text-xl">SpiritEraX</span>
             </Link>
 
-            {/* Search Bar */}
-            <div className="flex-1 max-w-2xl mx-8">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder="Search hubs, content, people..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 bg-white transition-all"
-                />
-              </div>
-            </div>
+            {/* Navigation Items */}
+            <nav className="hidden md:flex items-center gap-6">
+              <Link to="/gospel" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                Gospel
+              </Link>
+              <Link to="/bible" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                Bible
+              </Link>
+              <Link to="/prayers" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                Prayers
+              </Link>
+              <Link to="/ai" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                AI
+              </Link>
+              <Link to="/social" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                Social
+              </Link>
+            </nav>
 
             {/* Right Side Icons */}
             <div className="flex items-center gap-3">
@@ -132,6 +140,20 @@ export function Dashboard() {
               </div>
             </div>
           </div>
+
+          {/* Search Bar Section */}
+          <div className="py-4 border-t border-gray-200">
+            <div className="max-w-2xl mx-auto">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search hubs, content, people..."
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 bg-white transition-all"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -140,9 +162,10 @@ export function Dashboard() {
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Welcome back, {currentUser?.fullName || 'User'}! 👋
+            Welcome back, {currentUser?.fullName || 'User'}!
           </h1>
           <p className="text-gray-600 text-lg">
+            Where faith and technology unite like never before <br />
             Continue your spiritual journey with our digital tools
           </p>
         </div>
