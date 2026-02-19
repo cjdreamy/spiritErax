@@ -175,8 +175,8 @@ export function Dashboard() {
           <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl p-4 shadow-md">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 text-sm">Active Users</p>
-                <p className="text-gray-900 text-2xl font-bold">2.5K</p>
+                <p className="text-gray-600 text-sm">Active Users target</p>
+                <p className="text-gray-900 text-2xl font-bold">~2.5M</p>
               </div>
               <TrendingUp className="w-8 h-8 text-green-500" />
             </div>
