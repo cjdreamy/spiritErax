@@ -98,209 +98,245 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 flex items-center justify-center p-4 md:p-8 py-12">
-      {/* Back button */}
-      <Link
-        to="/"
-        className="absolute top-6 left-6 text-white hover:text-blue-200 transition-colors"
-      >
-        ← Back
-      </Link>
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4 md:p-8 py-12 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse animation-delay-2000"></div>
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse animation-delay-4000"></div>
+      </div>
 
-      {/* Form Container */}
-      <div className="w-full max-w-md">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-6">
-            <Logo size="md" />
-          </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Join SpiritEraX</h1>
-          <p className="text-blue-200">Create your account and start your journey</p>
-        </div>
-
-        {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 md:p-10">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Full Name Field */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Full Name
-              </label>
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                placeholder="John Doe"
-                className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 inputcolor ${
-                  errors.fullName
-                    ? "border-red-500 bg-red-50"
-                    : "border-gray-200 bg-gray-50 focus:bg-white"
-                }`}
-              />
-              {errors.fullName && (
-                <p className="text-red-600 text-sm font-medium mt-2">
-                  {errors.fullName}
-                </p>
-              )}
-            </div>
-
-            {/* Email Field */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="your@email.com"
-                className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 inputcolor ${
-                  errors.email
-                    ? "border-red-500 bg-red-50"
-                    : "border-gray-200 bg-gray-50 focus:bg-white"
-                }`}
-              />
-              {errors.email && (
-                <p className="text-red-600 text-sm font-medium mt-2">
-                  {errors.email}
-                </p>
-              )}
-            </div>
-
-            {/* Password Field */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Password
-              </label>
+      {/* Main Container */}
+      <div className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-16 relative z-10">
+        {/* Left Side - Logo and Brand */}
+        <div className="flex-1 text-center lg:text-left">
+          <div className="mb-8">
+            {/* Logo */}
+            <div className="flex justify-center lg:justify-start mb-6">
               <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="••••••••"
-                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 inputcolor ${
-                    errors.password
-                      ? "border-red-500 bg-red-50"
-                      : "border-gray-200 bg-gray-50 focus:bg-white"
-                  }`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  {showPassword ? (
-                    <EyeOff size={20} />
-                  ) : (
-                    <Eye size={20} />
-                  )}
-                </button>
-              </div>
-              {errors.password && (
-                <p className="text-red-600 text-sm font-medium mt-2">
-                  {errors.password}
-                </p>
-              )}
-
-              {/* Password Requirements */}
-              {formData.password && (
-                <div className="mt-3 p-3 bg-gray-50 rounded-lg space-y-2">
-                  {passwordRequirements.map((req, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-2 text-xs font-medium"
-                    >
-                      {req.met ? (
-                        <Check className="w-4 h-4 text-green-600" />
-                      ) : (
-                        <X className="w-4 h-4 text-gray-400" />
-                      )}
-                      <span
-                        className={
-                          req.met ? "text-green-700" : "text-gray-600"
-                        }
-                      >
-                        {req.label}
-                      </span>
-                    </div>
-                  ))}
+                <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-blue-400 rounded-2xl flex items-center justify-center shadow-2xl">
+                  <span className="text-white text-3xl font-bold">S</span>
                 </div>
-              )}
-            </div>
-
-            {/* Confirm Password Field */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="••••••••"
-                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none focus:border-blue-500 pr-12 inputcolor ${
-                    errors.confirmPassword
-                      ? "border-red-500 bg-red-50"
-                      : "border-gray-200 bg-gray-50 focus:bg-white"
-                  }`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff size={20} />
-                  ) : (
-                    <Eye size={20} />
-                  )}
-                </button>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-400 rounded-full animate-pulse"></div>
               </div>
-              {errors.confirmPassword && (
-                <p className="text-red-600 text-sm font-medium mt-2">
-                  {errors.confirmPassword}
-                </p>
-              )}
             </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold py-3 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg mt-6"
-            >
-              {isLoading ? "Creating Account..." : "Create Account"}
-            </button>
-          </form>
-
-          {/* Divider */}
-          <div className="relative my-8">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-600">Already have an account?</span>
+            <h1 className="text-5xl lg:text-6xl font-bold text-white mb-4">
+              Spirit<span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Era</span>X
+            </h1>
+            <p className="text-xl text-blue-200/80 mb-6 max-w-md">
+              Join the next generation of digital experiences
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <div className="flex items-center gap-2 text-white/80">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-sm">Secure Authentication</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/80">
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                <span className="text-sm">Modern Design</span>
+              </div>
             </div>
           </div>
-
-          {/* Sign In Link */}
-          <Link
-            to="/login"
-            className="w-full block text-center bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-all"
-          >
-            Sign In
-          </Link>
         </div>
 
-        {/* Terms Note */}
-        <p className="text-center text-blue-200 text-xs mt-6">
-          By creating an account, you agree to our Terms of Service and Privacy Policy
-        </p>
+        {/* Right Side - Signup Form */}
+        <div className="w-full lg:w-1/2 max-w-md">
+          {/* Back button */}
+          <Link
+            to="/"
+            className="absolute top-6 left-6 text-white/80 hover:text-white transition-colors z-20 backdrop-blur-sm bg-white/10 px-4 py-2 rounded-full border border-white/20 lg:hidden"
+          >
+            ← Back
+          </Link>
+
+          {/* Glass Form Card */}
+          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 md:p-10">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-white mb-2">Join SpiritEraX</h2>
+              <p className="text-blue-200/80">Create your account and start your journey</p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Full Name Field */}
+              <div>
+                <label className="block text-sm font-semibold text-white/90 mb-3">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="John Doe"
+                  className={`w-full px-4 py-4 rounded-2xl border-2 transition-all focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 backdrop-blur-sm bg-white/10 text-white placeholder-white/50 ${
+                    errors.fullName
+                      ? "border-red-400/50 bg-red-500/10"
+                      : "border-white/20 bg-white/5 focus:bg-white/15"
+                  }`}
+                />
+                {errors.fullName && (
+                  <p className="text-red-300 text-sm font-medium mt-2 flex items-center gap-2">
+                    <span className="w-1 h-1 bg-red-400 rounded-full"></span>
+                    {errors.fullName}
+                  </p>
+                )}
+              </div>
+
+              {/* Email Field */}
+              <div>
+                <label className="block text-sm font-semibold text-white/90 mb-3">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="your@email.com"
+                  className={`w-full px-4 py-4 rounded-2xl border-2 transition-all focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 backdrop-blur-sm bg-white/10 text-white placeholder-white/50 ${
+                    errors.email
+                      ? "border-red-400/50 bg-red-500/10"
+                      : "border-white/20 bg-white/5 focus:bg-white/15"
+                  }`}
+                />
+                {errors.email && (
+                  <p className="text-red-300 text-sm font-medium mt-2 flex items-center gap-2">
+                    <span className="w-1 h-1 bg-red-400 rounded-full"></span>
+                    {errors.email}
+                  </p>
+                )}
+              </div>
+
+              {/* Password Field */}
+              <div>
+                <label className="block text-sm font-semibold text-white/90 mb-3">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="••••••••"
+                    className={`w-full px-4 py-4 rounded-2xl border-2 transition-all focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 pr-12 backdrop-blur-sm bg-white/10 text-white placeholder-white/50 ${
+                      errors.password
+                        ? "border-red-400/50 bg-red-500/10"
+                        : "border-white/20 bg-white/5 focus:bg-white/15"
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white/90 transition-colors"
+                  >
+                    {showPassword ? (
+                      <EyeOff size={20} />
+                    ) : (
+                      <Eye size={20} />
+                    )}
+                  </button>
+                </div>
+                {errors.password && (
+                  <p className="text-red-300 text-sm font-medium mt-2 flex items-center gap-2">
+                    <span className="w-1 h-1 bg-red-400 rounded-full"></span>
+                    {errors.password}
+                  </p>
+                )}
+
+                {/* Password Requirements */}
+                {formData.password && (
+                  <div className="mt-3 p-3 backdrop-blur-sm bg-white/5 rounded-2xl space-y-2 border border-white/10">
+                    {passwordRequirements.map((req, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-2 text-xs font-medium"
+                      >
+                        {req.met ? (
+                          <Check className="w-4 h-4 text-green-400" />
+                        ) : (
+                          <X className="w-4 h-4 text-white/40" />
+                        )}
+                        <span
+                          className={
+                            req.met ? "text-green-300" : "text-white/60"
+                          }
+                        >
+                          {req.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Confirm Password Field */}
+              <div>
+                <label className="block text-sm font-semibold text-white/90 mb-3">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    placeholder="••••••••"
+                    className={`w-full px-4 py-4 rounded-2xl border-2 transition-all focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 pr-12 backdrop-blur-sm bg-white/10 text-white placeholder-white/50 ${
+                      errors.confirmPassword
+                        ? "border-red-400/50 bg-red-500/10"
+                        : "border-white/20 bg-white/5 focus:bg-white/15"
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white/90 transition-colors"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff size={20} />
+                    ) : (
+                      <Eye size={20} />
+                    )}
+                  </button>
+                </div>
+                {errors.confirmPassword && (
+                  <p className="text-red-300 text-sm font-medium mt-2 flex items-center gap-2">
+                    <span className="w-1 h-1 bg-red-400 rounded-full"></span>
+                    {errors.confirmPassword}
+                  </p>
+                )}
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold py-4 rounded-2xl hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-xl hover:shadow-2xl transform hover:scale-[1.02] active:scale-[0.98] mt-6"
+              >
+                {isLoading ? "Creating Account..." : "Create Account"}
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="relative my-8">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/20"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 backdrop-blur-sm bg-white/10 text-white/60 rounded-full border border-white/10">Already have an account?</span>
+              </div>
+            </div>
+
+            {/* Sign In Link */}
+            <Link
+              to="/login"
+              className="w-full block text-center backdrop-blur-sm bg-white/10 text-white font-bold py-4 rounded-2xl hover:bg-white/20 transition-all border border-white/20 shadow-xl hover:shadow-2xl transform hover:scale-[1.02] active:scale-[0.98]"
+            >
+              Sign In
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
